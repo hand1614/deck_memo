@@ -2,13 +2,10 @@
 # deck_memoについて
 deck_memoは、トレーディングカードゲームのデッキレシピを保存するためのツールとして、現在作成を進めているプログラムです。
 
-## 使用言語など
+## 使用言語
 - HTML
 - CSS
 - JavaScript
-- Git
-- Github
-- Github Pages
 
 ## 実行方法
 [こちら]( https://hand1614.github.io/deck_memo/ )で公開しています。  
