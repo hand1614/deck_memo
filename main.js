@@ -36,7 +36,7 @@ function create_node() {
     </tr>
   ` ) ;
   const item = flagment.querySelector( ".item" ) ;
-  item.addEventListener( "dragstart", new Event_chain( item, ".list > .item", "dragenter", item_insert, "dragend" ) ) ;
+  item.addEventListener( "dragstart", new Event_chain( item, new Path_to_iterable( ".list > .item" ), "dragenter", item_insert, item, "dragend" ) ) ;
   item.querySelector( ".delete > .delete_button" ).addEventListener( "click", row_delete ) ;
   for( const input of item.querySelectorAll( ".flex_input > .input" ) ){
     input.addEventListener( "input", textarea_resize ) ;

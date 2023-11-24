@@ -23,18 +23,28 @@ class Sender {
 }
 
 class Event_chain {
-  constructor( sender, reciever_path, trigger, recieved_action, cancel ) {
-    this.sender          = sender  ;
-    this.reciever_path   = reciever_path ;
-    this.trigger         = trigger ;
-    this.recieved_action = recieved_action ;
-    this.cancel          = cancel  ;
+  constructor( sender, reciever_elements, recieve_trigger, recieved_action, canceler, cancel_trigger ) {
+    this.sender            = sender  ;
+    this.reciever_elements = reciever_elements ;
+    this.recieve_trigger   = recieve_trigger ;
+    this.recieved_action   = recieved_action ;
+    this.canceler          = canceler  ;
+    this.cancel_trigger    = cancel_trigger ;
   }
   handleEvent ( e ) {
-    for( const target of document.querySelectorAll( this.reciever_path ) ) {
+    for( const target of this.reciever_elements ) {
       const catcher = new Sender( this.sender, target, this.recieved_action ) ;
-      target.addEventListener( this.trigger, catcher ) ;
-      this.sender.addEventListener( this.cancel, new Deleter( target, this.trigger, catcher ) ) ;
+      target.addEventListener( this.recieve_trigger, catcher ) ;
+      this.canceler.addEventListener( this.cancel_trigger, new Deleter( target, this.recieve_trigger, catcher ) ) ;
     }
+  }
+}
+
+class Path_to_iterable {
+  constructor( path ) {
+    this.path = path ;
+  }
+  *[ Symbol.iterator ]() {
+    yield* document.querySelectorAll( this.path ) ;
   }
 }
