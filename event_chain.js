@@ -18,7 +18,7 @@ class Sender {
     this.receiver = receiver ;
     this.callback = callback ;
   }
-  handleEvent( e ){ this.callback( this.receiver ) ; }
+  handleEvent( e ){ this.callback( this.receiver, e ) ; }
 }
 
 class Event_chain {

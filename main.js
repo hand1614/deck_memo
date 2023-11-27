@@ -10,7 +10,7 @@ class Path_to_iterable {
   }
 }
 
-const item_insert = sender => receiver => {
+const item_insert = sender => ( receiver, e ) => {
   const list  = [ ...document.querySelectorAll( ".list > .item" ) ] ;
   if( list.indexOf( sender ) > list.indexOf( receiver ) ) receiver.before( sender ) ;
   else                                                    receiver.after(  sender ) ;
