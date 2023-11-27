@@ -14,17 +14,15 @@ class Deleter {
 }
 
 class Sender {
-  constructor( sender, receiver, callback ) {
-    this.sender   = sender ;
+  constructor( receiver, callback ) {
     this.receiver = receiver ;
     this.callback = callback ;
   }
-  handleEvent( e ){ this.callback( this.sender, this.receiver ) ; }
+  handleEvent( e ){ this.callback( this.receiver ) ; }
 }
 
 class Event_chain {
-  constructor( sender, reciever_elements, recieve_trigger, recieved_action, canceler, cancel_trigger ) {
-    this.sender            = sender  ;
+  constructor( reciever_elements, recieve_trigger, recieved_action, canceler, cancel_trigger ) {
     this.reciever_elements = reciever_elements ;
     this.recieve_trigger   = recieve_trigger ;
     this.recieved_action   = recieved_action ;
@@ -33,18 +31,10 @@ class Event_chain {
   }
   handleEvent ( e ) {
     for( const target of this.reciever_elements ) {
-      const catcher = new Sender( this.sender, target, this.recieved_action ) ;
+      const catcher = new Sender( target, this.recieved_action ) ;
       target.addEventListener( this.recieve_trigger, catcher ) ;
       this.canceler.addEventListener( this.cancel_trigger, new Deleter( target, this.recieve_trigger, catcher ) ) ;
     }
   }
 }
 
-class Path_to_iterable {
-  constructor( path ) {
-    this.path = path ;
-  }
-  *[ Symbol.iterator ]() {
-    yield* document.querySelectorAll( this.path ) ;
-  }
-}
