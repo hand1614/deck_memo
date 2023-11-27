@@ -14,11 +14,11 @@ class Deleter {
 }
 
 class Sender {
-  constructor( receiver, callback ) {
-    this.receiver = receiver ;
+  constructor( target, callback ) {
+    this.target   = target ;
     this.callback = callback ;
   }
-  handleEvent( e ){ this.callback( this.receiver, e ) ; }
+  handleEvent( e ){ this.callback( this.target, e ) ; }
 }
 
 class Event_chain {
