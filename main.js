@@ -31,15 +31,15 @@ function create_node() {
         <button class = "delete_button" tabindex = "-1">Delete</button>
       </td>
       <td class = "name">
-        <div class = "flex_input">
-          <div   class = "dummy"></div>
-          <input class = "input" type = "text" ></input>
+        <div class = "sized_by_internal_text">
+          <div   class = "text_box"></div>
+          <input class = "content" type = "text" ></input>
         </div>
       </td>
       <td class = "number">
-        <div class = "flex_input">
-          <div   class = "dummy"></div>
-          <input class = "input" type = "number" value = "1"></input>
+        <div class = "sized_by_internal_text">
+          <div   class = "text_box"></div>
+          <input class = "content" type = "number" value = "1"></input>
         </div>
       </td>
     </tr>
@@ -47,8 +47,8 @@ function create_node() {
   const item = flagment.querySelector( ".item" ) ;
   item.addEventListener( "dragstart", new Temporarily_enabled_event( new Path_to_iterable( ".list > .item" ), "dragenter", item_insert( item ), item, "dragend" ) ) ;
   item.querySelector( ".delete > .delete_button" ).addEventListener( "click", row_delete ) ;
-  for( const input of item.querySelectorAll( ".flex_input > .input" ) ){
-    input.addEventListener( "input", textarea_resize ) ;
+  for( const input of item.querySelectorAll( ".sized_by_internal_text > .content" ) ){
+    input.addEventListener( "input", update_text_box ) ;
     input.addEventListener( "keydown", press_enter_to_new_item ) ;
   }
   return flagment ;
@@ -59,7 +59,7 @@ function press_enter_to_new_item( e ) {
   if( e.isComposing ) return ;
   const row = this.parentElement.parentElement.parentElement ;
   if( row.nextElementSibling === null ) row.after( create_node() ) ;
-  row.nextElementSibling.cells[ this.parentElement.parentElement.cellIndex ].querySelector( ".flex_input > .input" ).select() ;
+  row.nextElementSibling.cells[ this.parentElement.parentElement.cellIndex ].querySelector( ".sized_by_internal_text > .content" ).select() ;
 }
 
 function row_delete( e ) {
