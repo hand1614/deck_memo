@@ -14,11 +14,11 @@ class Deleter {
 }
 
 class Element_communicator {
-  constructor( target, callback ) {
-    this.target   = target ;
+  constructor( element, callback ) {
+    this.element  = element ;
     this.callback = callback ;
   }
-  handleEvent( e ){ this.callback( this.target, e ) ; }
+  handleEvent( e ){ this.callback( this.element, e ) ; }
 }
 
 class Temporarily_enabled_event {
