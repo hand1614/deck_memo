@@ -45,7 +45,7 @@ function create_node() {
     </tr>
   ` ) ;
   const item = flagment.querySelector( ".item" ) ;
-  item.addEventListener( "dragstart", new Event_temporarily_enabled( new Path_to_iterable( ".list > .item" ), "dragenter", item_insert( item ), item, "dragend" ) ) ;
+  item.addEventListener( "dragstart", new Temporarily_enabled_event( new Path_to_iterable( ".list > .item" ), "dragenter", item_insert( item ), item, "dragend" ) ) ;
   item.querySelector( ".delete > .delete_button" ).addEventListener( "click", row_delete ) ;
   for( const input of item.querySelectorAll( ".flex_input > .input" ) ){
     input.addEventListener( "input", textarea_resize ) ;

@@ -21,7 +21,7 @@ class Element_communicator {
   handleEvent( e ){ this.callback( this.target, e ) ; }
 }
 
-class Event_temporarily_enabled {
+class Temporarily_enabled_event {
   constructor( elements, enable_event_type, listener, disabler, disable_trigger ) {
     this.elements           = elements ;
     this.enable_event_type  = enable_event_type ;
