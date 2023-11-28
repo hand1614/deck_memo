@@ -13,7 +13,7 @@ class Deleter {
   }
 }
 
-class Sender {
+class Element_communicator {
   constructor( target, callback ) {
     this.target   = target ;
     this.callback = callback ;
@@ -21,19 +21,19 @@ class Sender {
   handleEvent( e ){ this.callback( this.target, e ) ; }
 }
 
-class Event_chain {
-  constructor( reciever_elements, recieve_trigger, recieved_action, canceler, cancel_trigger ) {
-    this.reciever_elements = reciever_elements ;
-    this.recieve_trigger   = recieve_trigger ;
-    this.recieved_action   = recieved_action ;
-    this.canceler          = canceler  ;
-    this.cancel_trigger    = cancel_trigger ;
+class Event_temporarily_enabled {
+  constructor( elements, enable_event_type, listener, disabler, disable_trigger ) {
+    this.elements           = elements ;
+    this.enable_event_type  = enable_event_type ;
+    this.listener           = listener ;
+    this.disabler           = disabler  ;
+    this.disable_trigger    = disable_trigger ;
   }
   handleEvent ( e ) {
-    for( const target of this.reciever_elements ) {
-      const catcher = new Sender( target, this.recieved_action ) ;
-      target.addEventListener( this.recieve_trigger, catcher ) ;
-      this.canceler.addEventListener( this.cancel_trigger, new Deleter( target, this.recieve_trigger, catcher ) ) ;
+    for( const target of this.elements ) {
+      const target_element_communicator = new Element_communicator( target, this.listener ) ;
+      target.addEventListener( this.enable_event_type, event_target_communicator ) ;
+      this.disabler.addEventListener( this.disable_trigger, new Deleter( target, this.listener, target_element_communicator ) ) ;
     }
   }
 }
