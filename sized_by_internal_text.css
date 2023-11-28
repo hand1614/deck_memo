@@ -1,0 +1,39 @@
+
+.sized_by_internal_text {
+  position: relative ;
+}
+
+.sized_by_internal_text > .text_box {
+  overflow-wrap: break-word ;
+  visibility:    hidden ;
+}
+
+.sized_by_internal_text > .content {
+  position: absolute ;
+  width:    100% ;
+  height:   100% ;
+  resize:   none ;
+  top:      0 ;
+  left:     0 ;
+}
+
+.sized_by_internal_text > :is( .content, .text_box ) {
+  box-sizing:     border-box ;
+  overflow:       hidden ;
+}
+
+
+.sized_by_internal_text > :is( .content, .text_box ) {
+  /*  These may be changed.  */
+  padding:        5px ;
+  border:         5px solid #888888 ;
+  margin:         0px ;
+  font-size:      1em ;
+  font-family:    inherit ;
+  line-height:    1em ;
+  min-height:     100px ;
+  min-width:      100px ;
+  letter-spacing: normal ;
+  white-space:    pre ;
+}
+
