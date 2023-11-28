@@ -1,5 +1,5 @@
 
-.list > .item > :is( .name, .number ) > .sized_by_internal_text {
+.card_list > .card_data > :is( .name, .number ) > .sized_by_internal_text {
   width:  100% ;
   height: 100% ;
 }

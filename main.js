@@ -11,7 +11,7 @@ class Path_to_iterable {
 }
 
 const item_insert = sender => ( receiver, e ) => {
-  const list  = [ ...document.querySelectorAll( ".list > .item" ) ] ;
+  const list  = [ ...document.querySelectorAll( ".card_list > .card_data" ) ] ;
   if( list.indexOf( sender ) > list.indexOf( receiver ) ) receiver.before( sender ) ;
   else                                                    receiver.after(  sender ) ;
 }
@@ -26,7 +26,7 @@ function text_to_documet_fragment( text ) {
 
 function create_node() {
   const flagment = text_to_documet_fragment ( `
-    <tr class = "item" draggable = "true">
+    <tr class = "card_data" draggable = "true">
       <td class = "delete">
         <button class = "delete_button" tabindex = "-1">Delete</button>
       </td>
@@ -44,8 +44,8 @@ function create_node() {
       </td>
     </tr>
   ` ) ;
-  const item = flagment.querySelector( ".item" ) ;
-  item.addEventListener( "dragstart", new Temporarily_enabled_event( new Path_to_iterable( ".list > .item" ), "dragenter", item_insert( item ), item, "dragend" ) ) ;
+  const item = flagment.querySelector( ".card_data" ) ;
+  item.addEventListener( "dragstart", new Temporarily_enabled_event( new Path_to_iterable( ".card_list > .card_data" ), "dragenter", item_insert( item ), item, "dragend" ) ) ;
   item.querySelector( ".delete > .delete_button" ).addEventListener( "click", row_delete ) ;
   for( const input of item.querySelectorAll( ".sized_by_internal_text > .content" ) ){
     input.addEventListener( "input", update_text_box ) ;
@@ -67,5 +67,5 @@ function row_delete( e ) {
 }
 
 window.onload = function () {
-  document.querySelector( ".list" ).appendChild( create_node() ) ;
+  document.querySelector( ".card_list" ).appendChild( create_node() ) ;
 }
