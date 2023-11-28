@@ -32,8 +32,8 @@ class Event_temporarily_enabled {
   handleEvent ( e ) {
     for( const target of this.elements ) {
       const target_element_communicator = new Element_communicator( target, this.listener ) ;
-      target.addEventListener( this.enable_event_type, event_target_communicator ) ;
-      this.disabler.addEventListener( this.disable_trigger, new Deleter( target, this.listener, target_element_communicator ) ) ;
+      target.addEventListener( this.enable_event_type, target_element_communicator ) ;
+      this.disabler.addEventListener( this.disable_trigger, new Deleter( target, this.enable_event_type, target_element_communicator ) ) ;
     }
   }
 }
