@@ -86,6 +86,21 @@ class Element_delete {
   }
 }
 
+function text_to_flagment( name, number ) {
+  const flagment = create_input_column() ;
+  const input_data_list = [
+    { selector:   ".name > .sized_by_internal_text > .content", value:   name },
+    { selector: ".number > .sized_by_internal_text > .content", value: number },
+  ] ;
+  for( const input_data of input_data_list ){
+    for( const node of flagment.querySelectorAll( input_data.selector ) ) {
+      node.value = v ;
+      node.dispatchEvent( new InputEvent( "input" ) ) ;
+    }
+  }
+  return flagment ;
+}
+
 window.onload = function () {
   document.querySelector( ".card_list" ).appendChild( create_input_column() ) ;
 }
