@@ -1,7 +1,7 @@
 
 'use strict' ;
 
-class Path_to_iterable {
+class Selector_to_iterable {
   constructor( path ) {
     this.path = path ;
   }
@@ -24,7 +24,7 @@ function text_to_documet_fragment( text ) {
   return ret ;
 }
 
-function create_node() {
+function create_input_column() {
   const flagment = text_to_documet_fragment ( `
     <tr class = "card_data" draggable = "true">
       <td class = "delete">
@@ -44,22 +44,37 @@ function create_node() {
       </td>
     </tr>
   ` ) ;
-  const item = flagment.querySelector( ".card_data" ) ;
-  item.addEventListener( "dragstart", new Temporarily_enabled_event( new Path_to_iterable( ".card_list > .card_data" ), "dragenter", item_insert( item ), item, "dragend" ) ) ;
-  item.querySelector( ".delete > .delete_button" ).addEventListener( "click", row_delete ) ;
-  for( const input of item.querySelectorAll( ".sized_by_internal_text > .content" ) ){
-    input.addEventListener( "input", update_text_box ) ;
-    input.addEventListener( "keydown", press_enter_to_new_item ) ;
-  }
+  const row = flagment.querySelector( ".card_data" ) ;
+  const sort_by_drag = new Temporarily_enabled_event( new Selector_to_iterable( ".card_list > .card_data" ), "dragenter", item_insert( row ), row, "dragend" ) ;
+  const press_enter_to_number_input_field_for_next_line = new Input_to_next_target_activate( "Enter", row, ".number > .sized_by_internal_text > .content" ) ;
+  const press_enter_to_name_input_field_for_next_line   = new Input_to_next_target_activate( "Enter", row, ".name   > .sized_by_internal_text > .content" ) ;
+  const press_tab_to_next_line                          = new Input_to_next_target_activate( "Tab"  , row ) ;
+  const event_data_list = [
+    { selector: ".card_data",                                   event: "dragstart", listener: sort_by_drag },
+    { selector: ".delete_button",                               event: "click",     listener: row_delete },
+    { selector: ".sized_by_internal_text > .content",           event: "input",     listener: update_text_box },
+    { selector: ".name > .sized_by_internal_text > .content",   event: "keydown",   listener: press_enter_to_name_input_field_for_next_line },
+    { selector: ".number > .sized_by_internal_text > .content", event: "keydown",   listener: press_enter_to_number_input_field_for_next_line },
+    { selector: "td:has( :enabled ):last-of-type",              event: "keydown",   listener: press_tab_to_next_line },
+  ] ;
+  for( const event_data of event_data_list )
+    for( const target of flagment.querySelectorAll( event_data.selector ) )
+      target.addEventListener( event_data.event, event_data.listener ) ;
   return flagment ;
 }
 
-function press_enter_to_new_item( e ) {
-  if( e.code !== "Enter" ) return ;
-  if( e.isComposing ) return ;
-  const row = this.parentElement.parentElement.parentElement ;
-  if( row.nextElementSibling === null ) row.after( create_node() ) ;
-  row.nextElementSibling.cells[ this.parentElement.parentElement.cellIndex ].querySelector( ".sized_by_internal_text > .content" ).select() ;
+class Input_to_next_target_activate {
+  constructor( key, row, next_target_selector = "" ){
+    this.key      = key ;
+    this.row      = row ;
+    this.selector = next_target_selector ;
+  }
+  handleEvent( e ) {
+    if( e.code !== this.key ) return ;
+    if( e.isComposing ) return ;
+    if( this.row.nextElementSibling === null ) this.row.after( create_input_column() ) ;
+    if( this.selector !== "" ) this.row.nextElementSibling.querySelector( this.selector ).select() ;
+  }
 }
 
 function row_delete( e ) {
@@ -67,5 +82,5 @@ function row_delete( e ) {
 }
 
 window.onload = function () {
-  document.querySelector( ".card_list" ).appendChild( create_node() ) ;
+  document.querySelector( ".card_list" ).appendChild( create_input_column() ) ;
 }
