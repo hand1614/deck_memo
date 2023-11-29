@@ -51,7 +51,7 @@ function create_input_column() {
   const press_tab_to_next_line                          = new Input_to_next_target_activate( "Tab"  , row ) ;
   const event_data_list = [
     { selector: ".card_data",                                   event: "dragstart", listener: sort_by_drag },
-    { selector: ".delete_button",                               event: "click",     listener: row_delete },
+    { selector: ".delete_button",                               event: "click",     listener: new Element_delete( row ) },
     { selector: ".sized_by_internal_text > .content",           event: "input",     listener: update_text_box },
     { selector: ".name > .sized_by_internal_text > .content",   event: "keydown",   listener: press_enter_to_name_input_field_for_next_line },
     { selector: ".number > .sized_by_internal_text > .content", event: "keydown",   listener: press_enter_to_number_input_field_for_next_line },
@@ -77,8 +77,13 @@ class Input_to_next_target_activate {
   }
 }
 
-function row_delete( e ) {
-  this.parentElement.parentElement.remove() ;
+class Element_delete {
+  constructor( delete_target ) {
+    this.target = delete_target ;
+  }
+  handleEvent( e ) {
+    this.target.remove() ;
+  }
 }
 
 window.onload = function () {
