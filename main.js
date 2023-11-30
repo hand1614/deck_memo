@@ -24,7 +24,7 @@ function text_to_documet_fragment( text ) {
   return ret ;
 }
 
-function create_input_column() {
+function create_input_row() {
   const flagment = text_to_documet_fragment ( `
     <tr class = "card_data" draggable = "true">
       <td class = "delete">
@@ -72,7 +72,7 @@ class Input_to_next_target_activate {
   handleEvent( e ) {
     if( e.code !== this.key ) return ;
     if( e.isComposing ) return ;
-    if( this.row.nextElementSibling === null ) this.row.after( create_input_column() ) ;
+    if( this.row.nextElementSibling === null ) this.row.after( create_input_row() ) ;
     if( this.selector !== "" ) this.row.nextElementSibling.querySelector( this.selector ).select() ;
   }
 }
@@ -86,21 +86,26 @@ class Element_delete {
   }
 }
 
-function text_to_flagment( name, number ) {
-  const flagment = create_input_column() ;
+function create_entered_rows( names, numbers ) {
+  const ret = new DocumentFragment() ;
   const input_data_list = [
-    { selector:   ".name > .sized_by_internal_text > .content", value:   name },
-    { selector: ".number > .sized_by_internal_text > .content", value: number },
+    { selector:   ".name > .sized_by_internal_text > .content", values:   names },
+    { selector: ".number > .sized_by_internal_text > .content", values: numbers },
   ] ;
-  for( const input_data of input_data_list ){
-    for( const node of flagment.querySelectorAll( input_data.selector ) ) {
-      node.value = v ;
-      node.dispatchEvent( new InputEvent( "input" ) ) ;
+  const limit = Math.max( ...input_data_list.map( v => v.values.length ) ) ;
+  for( let i = 0 ; i < limit ; i++ ) {
+    const row = create_input_row() ;
+    for( const input_data of input_data_list ) {
+      for( const node of row.querySelectorAll( input_data.selector ) ) {
+        node.value = input_data.values[ i ] ?? "" ;
+        node.dispatchEvent( new InputEvent( "input" ) ) ;
+      }
     }
+    ret.append( row ) ;
   }
-  return flagment ;
+  return ret ;
 }
 
 window.onload = function () {
-  document.querySelector( ".card_list" ).appendChild( create_input_column() ) ;
+  document.querySelector( ".card_list" ).appendChild( create_input_row() ) ;
 }
