@@ -106,6 +106,16 @@ function create_entered_rows( names, numbers ) {
   return ret ;
 }
 
+function table_output( e ) {
+  const name   = [ ...document.querySelectorAll( ".name   > .sized_by_internal_text > .content" ) ].map( v => v.value ).join( "\n" ) ;
+  const number = [ ...document.querySelectorAll( ".number > .sized_by_internal_text > .content" ) ].map( v => v.value ).join( "\n" ) ;
+  history.pushState( {}, "", "?" + ( new URLSearchParams( { name: name, number: number } ) ) ) ;
+}
+
 window.onload = function () {
-  document.querySelector( ".card_list" ).appendChild( create_input_row() ) ;
+  const query  = new URLSearchParams( location.search ) ;
+  const name   = query.get( "name"   )?.split( "\n" ) ?? ""  ;
+  const number = query.get( "number" )?.split( "\n" ) ?? "1" ;
+  document.querySelector( ".card_list" ).appendChild( create_entered_rows( name, number ) ) ;
+  document.querySelector( "button.table_output" ).addEventListener( "click", table_output ) ;
 }
