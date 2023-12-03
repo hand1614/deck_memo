@@ -107,15 +107,15 @@ function create_entered_rows( names, numbers ) {
 }
 
 function table_output( e ) {
-  const name   = [ ...document.querySelectorAll( ".name   > .sized_by_internal_text > .content" ) ].map( v => v.value ).join( "\n" ) ;
-  const number = [ ...document.querySelectorAll( ".number > .sized_by_internal_text > .content" ) ].map( v => v.value ).join( "\n" ) ;
+  const name   = String64.encode( [ ...document.querySelectorAll( ".name   > .sized_by_internal_text > .content" ) ].map( v => v.value ).join( "\n" ) ) ;
+  const number = String64.encode( [ ...document.querySelectorAll( ".number > .sized_by_internal_text > .content" ) ].map( v => v.value ).join( "\n" ) ) ;
   history.pushState( {}, "", "?" + ( new URLSearchParams( { name: name, number: number } ) ) ) ;
 }
 
 window.onload = function () {
   const query  = new URLSearchParams( location.search ) ;
-  const name   = query.get( "name"   )?.split( "\n" ) ?? ""  ;
-  const number = query.get( "number" )?.split( "\n" ) ?? "1" ;
-  document.querySelector( ".card_list" ).appendChild( create_entered_rows( name, number ) ) ;
+  const name   = query.get( "name"   ) ;
+  const number = query.get( "number" ) ;
+  document.querySelector( ".card_list" ).appendChild( create_entered_rows( name === null ? "" : String64.decode( name ).split( "\n" ) , number === null ? "1" : String64.decode( number ).split( "\n" ) ) ) ;
   document.querySelector( "button.table_output" ).addEventListener( "click", table_output ) ;
 }
