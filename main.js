@@ -106,16 +106,21 @@ function create_entered_rows( names, numbers ) {
   return ret ;
 }
 
-function table_output( e ) {
-  const name   = String64.encode( [ ...document.querySelectorAll( ".name   > .sized_by_internal_text > .content" ) ].map( v => v.value ).join( "\n" ) ) ;
-  const number = String64.encode( [ ...document.querySelectorAll( ".number > .sized_by_internal_text > .content" ) ].map( v => v.value ).join( "\n" ) ) ;
-  history.pushState( {}, "", "?" + ( new URLSearchParams( { name: name, number: number } ) ) ) ;
+class Table_output {
+  constructor( string64 ) {
+    this.string64 = string64 ;
+  }
+  handleEvent( e ) {
+    const name   = this.string64.encode( [ ...document.querySelectorAll( ".name   > .sized_by_internal_text > .content" ) ].map( v => v.value ).join( "\n" ) ) ;
+    const number = this.string64.encode( [ ...document.querySelectorAll( ".number > .sized_by_internal_text > .content" ) ].map( v => v.value ).join( "\n" ) ) ;
+    history.pushState( {}, "", "?" + ( new URLSearchParams( { name: name, number: number } ) ) ) ;
+  }
 }
-
 window.onload = function () {
-  const query  = new URLSearchParams( location.search ) ;
-  const name   = query.get( "name"   ) ;
-  const number = query.get( "number" ) ;
-  document.querySelector( ".card_list" ).appendChild( create_entered_rows( name === null ? "" : String64.decode( name ).split( "\n" ) , number === null ? "1" : String64.decode( number ).split( "\n" ) ) ) ;
-  document.querySelector( "button.table_output" ).addEventListener( "click", table_output ) ;
+  const query    = new URLSearchParams( location.search ) ;
+  const string64 = new String64() ;
+  const name     = query.get( "name"   ) ;
+  const number   = query.get( "number" ) ;
+  document.querySelector( ".card_list" ).appendChild( create_entered_rows( name === null ? "" : string64.decode( name ).split( "\n" ) , number === null ? "1" : string64.decode( number ).split( "\n" ) ) ) ;
+  document.querySelector( "button.table_output" ).addEventListener( "click", new Table_output( string64 ) ) ;
 }

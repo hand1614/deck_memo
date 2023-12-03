@@ -2,17 +2,15 @@
 "use strict";
 
 class String64 {
-  static #init( init_obj ) {
-    return {
-      charset: init_obj.charset ?? "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_",
-      log_all: init_obj.log_all ?? ( new Array( 56 ) ).fill( 0 ),
-      log_hi:  init_obj.log_hi  ?? ( new Array( 56 ) ).fill( 0 ),
-    } ;
+  constructor( init = {} ) {
+    this.charset = init.charset ?? "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_" ;
+    this.log_all = init.log_all ?? ( new Array( 56 ) ).fill( 0 ) ;
+    this.log_hi  = init.log_hi  ?? ( new Array( 56 ) ).fill( 0 ) ;
   }
 
-  static encode ( str, init_obj = {} ) {
+  encode ( str, init_obj = {} ) {
     let   ret = "" ;
-    const { charset, log_all, log_hi } = this.#init( init_obj ) ;
+    const [ charset, log_all, log_hi ] = [ this.charset, [ ...this.log_all ], [ ...this.log_hi ] ] ;
     for( const v of str ) {
       const n         = v.codePointAt() ;
       const index_all = log_all.indexOf( n ) ;
@@ -31,9 +29,9 @@ class String64 {
     return ret ;
   }
 
-  static decode ( str, init_obj = {} ) {
+  decode ( str, init_obj = {} ) {
     let   ret = "" ;
-    const { charset, log_all, log_hi } = this.#init( init_obj ) ;
+    const [ charset, log_all, log_hi ] = [ this.charset, [ ...this.log_all ], [ ...this.log_hi ] ] ;
     const codelist = [] ;
     for( const char of str ) codelist.push( charset.indexOf( char ) ) ;
     for( let i = 0 ; i < str.length ; ) {
