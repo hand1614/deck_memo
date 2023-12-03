@@ -116,6 +116,7 @@ class Table_output {
     history.pushState( {}, "", "?" + ( new URLSearchParams( { name: name, number: number } ) ) ) ;
   }
 }
+
 window.onload = function () {
   const query    = new URLSearchParams( location.search ) ;
   const string64 = new String64() ;

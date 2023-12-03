@@ -8,19 +8,21 @@ class String64 {
     this.log_hi  = init.log_hi  ?? ( new Array( 56 ) ).fill( 0 ) ;
   }
 
-  encode ( str, init_obj = {} ) {
+  encode ( str ) {
     let   ret = "" ;
-    const [ charset, log_all, log_hi ] = [ this.charset, [ ...this.log_all ], [ ...this.log_hi ] ] ;
+    const log_all = [ ...this.log_all ] ;
+    const log_hi  = [ ...this.log_hi ]  ;
     for( const v of str ) {
       const n         = v.codePointAt() ;
       const index_all = log_all.indexOf( n ) ;
       const index_hi  = log_hi.indexOf( n & 0x1fff00 ) ;
-      ret +=
-        index_all !== -1                 ? charset[ index_all ]
-      : n >> 8    === log_all[ 0 ] >> 8  ? charset[ 0x38 | n & 3 ] + charset[ 0x3f & n >> 2 ]
-      : index_hi  !== -1                 ? charset[ 0x3c | n & 3 ] + charset[ 0x3f & n >> 2 ] + charset[ index_hi ]
-      : n >> 16   === log_all[ 0 ] >> 16 ? charset[ 0x3c | n & 3 ] + charset[ 0x3f & n >> 2 ] + charset[ 0x38 | n >> 8 & 3 ] + charset[ 0x3f & n >> 10 ]
-      :                                    charset[ 0x3c | n & 3 ] + charset[ 0x3f & n >> 2 ] + charset[ 0x3c | n >> 8 & 3 ] + charset[ 0x3f & n >> 10 ] + charset[ n >> 16 ] ;
+      const codelist =
+        index_all !== -1                 ? [ index_all ]
+      : n >> 8    === log_all[ 0 ] >> 8  ? [ 0x38 | n & 3, 0x3f & n >> 2 ]
+      : index_hi  !== -1                 ? [ 0x3c | n & 3, 0x3f & n >> 2, index_hi ]
+      : n >> 16   === log_all[ 0 ] >> 16 ? [ 0x3c | n & 3, 0x3f & n >> 2, 0x38 | n >> 8 & 3, 0x3f & n >> 10 ]
+      :                                    [ 0x3c | n & 3, 0x3f & n >> 2, 0x3c | n >> 8 & 3, 0x3f & n >> 10, n >> 16 ] ;
+      for( const code of codelist ) ret += this.charset[ code ] ;
       for( let i = ( index_hi + 1 || log_hi.length ) - 1 ; i > 0 ; i-- ) log_hi[ i ] = log_hi[ i - 1 ] ;
       log_hi[ 0 ] = n & 0x1fff00 ;
       for( let i = ( index_all + 1 || log_all.length ) - 1 ; i > 0 ; i-- ) log_all[ i ] = log_all[ i - 1 ] ;
@@ -29,11 +31,12 @@ class String64 {
     return ret ;
   }
 
-  decode ( str, init_obj = {} ) {
+  decode ( str ) {
     let   ret = "" ;
-    const [ charset, log_all, log_hi ] = [ this.charset, [ ...this.log_all ], [ ...this.log_hi ] ] ;
+    const log_all = [ ...this.log_all ] ;
+    const log_hi  = [ ...this.log_hi ]  ;
     const codelist = [] ;
-    for( const char of str ) codelist.push( charset.indexOf( char ) ) ;
+    for( const char of str ) codelist.push( this.charset.indexOf( char ) ) ;
     for( let i = 0 ; i < str.length ; ) {
       const n =
         codelist[ i ]     & 0x38 ^ 0x38 ? log_all[ codelist[ i++ ] ]
