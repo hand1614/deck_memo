@@ -23,11 +23,11 @@ class Element_communicator {
 
 class Temporarily_enabled_event {
   constructor( elements, enable_event_type, listener, disabler, disable_trigger ) {
-    this.elements           = elements ;
-    this.enable_event_type  = enable_event_type ;
-    this.listener           = listener ;
-    this.disabler           = disabler  ;
-    this.disable_trigger    = disable_trigger ;
+    this.elements          = elements ;
+    this.enable_event_type = enable_event_type ;
+    this.listener          = listener ;
+    this.disabler          = disabler  ;
+    this.disable_trigger   = disable_trigger ;
   }
   handleEvent ( e ) {
     for( const target of this.elements ) {
