@@ -11,7 +11,7 @@ class String64 {
   encode ( str ) {
     let   ret = "" ;
     const log_all = [ ...this.log_all ] ;
-    const log_hi  = [ ...this.log_hi ]  ;
+    const log_hi  = [ ...this.log_hi ] ;
     for( const v of str ) {
       const n         = v.codePointAt() ;
       const index_all = log_all.indexOf( n ) ;
@@ -34,7 +34,7 @@ class String64 {
   decode ( str ) {
     let   ret = "" ;
     const log_all = [ ...this.log_all ] ;
-    const log_hi  = [ ...this.log_hi ]  ;
+    const log_hi  = [ ...this.log_hi ] ;
     const codelist = [] ;
     for( const char of str ) codelist.push( this.charset.indexOf( char ) ) ;
     for( let i = 0 ; i < str.length ; ) {
