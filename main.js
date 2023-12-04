@@ -2,11 +2,11 @@
 'use strict' ;
 
 class Selector_to_iterable {
-  constructor( path ) {
-    this.path = path ;
+  constructor( selector ) {
+    this.selector = selector ;
   }
   *[ Symbol.iterator ]() {
-    yield* document.querySelectorAll( this.path ) ;
+    yield* document.querySelectorAll( this.selector ) ;
   }
 }
 
