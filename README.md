@@ -10,8 +10,4 @@ deck_memoは、トレーディングカードゲームのデッキレシピを�
 
 
 ## 実行方法
-[こちら]( https://hand1614.github.io/deck_memo/ )で公開しています。  
-
-- Google chrome: 119.0.6045.124
-- Fire fox: 119.0.1
-
+[こちら]( https://hand1614.github.io/deck_memo/ )で公開しています。
